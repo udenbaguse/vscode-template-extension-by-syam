@@ -1,0 +1,41 @@
+{
+  "name": "vscode-template-extension-by-syam",
+  "version": "1.0.0",
+  "description": "CLI generator for creating VS Code extension templates.",
+  "license": "MIT",
+  "type": "commonjs",
+  "bin": {
+    "vscode-template-extension-by-syam": "./bin/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/udenbaguse/vscode-template-extension-by-syam.git"
+  },
+  "homepage": "https://github.com/udenbaguse/vscode-template-extension-by-syam.git#readme",
+  "bugs": {
+    "url": "https://github.com/udenbaguse/vscode-template-extension-by-syam.git/issues"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "keywords": [
+    "vscode",
+    "extension",
+    "template",
+    "generator",
+    "cli"
+  ],
+  "files": [
+    "bin",
+    "src",
+    ".vscodeignore",
+    "jsconfig.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "check": "node --check bin/cli.js && node --check src/extension.js && node --check src/hoverProvider.js && node --check src/docsLoader.js",
+    "start": "node bin/cli.js",
+    "test": "npm run check"
+  }
+}
