@@ -31,7 +31,8 @@
     ".vscodeignore",
     "jsconfig.json",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "check": "node --check bin/cli.js && node --check src/extension.js && node --check src/hoverProvider.js && node --check src/docsLoader.js",
