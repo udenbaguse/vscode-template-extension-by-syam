@@ -1,13 +1,13 @@
 {
   "templateKeyword": {
     "title": "templateKeyword",
-    "description": "Contoh dokumentasi hover. Ganti key ini dengan keyword, function, class, atau API yang ingin diberi penjelasan.",
+    "description": "Example hover documentation. Replace this key with the keyword, function, class, or API you want to explain.",
     "syntax": "templateKeyword(value)",
     "example": "const result = templateKeyword(\"hello\");"
   },
   "map": {
     "title": "Array.prototype.map()",
-    "description": "Membuat array baru dari hasil pemanggilan callback pada setiap item array.",
+    "description": "Creates a new array from the results of calling the callback on each array item.",
     "syntax": "array.map((item, index, array) => newValue)",
     "example": "const numbers = [1, 2, 3];\nconst doubled = numbers.map((number) => number * 2);"
   }
