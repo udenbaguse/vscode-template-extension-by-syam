@@ -265,6 +265,7 @@ function createPackageJson(answers) {
     displayName: answers.displayName,
     description: answers.description,
     version: answers.version,
+    icon: "icon.ico",
     publisher: answers.publisher,
     license: answers.license,
     ...(answers.repositoryUrl
@@ -280,17 +281,24 @@ function createPackageJson(answers) {
     },
     categories: ["Other"],
     activationEvents: answers.activationEvents,
-    main: "./src/extension.js",
+    main: "./out/extension.js",
     contributes: {},
     scripts: {
       check:
         "node --check src/extension.js && node --check src/hoverProvider.js && node --check src/docsLoader.js",
       test: "npm run check",
-      package: "vsce package",
+      "merge-docs": "node scripts/merge-docs.js",
+      "minify-docs": "node scripts/minify-docs.js",
+      compile: "npm run merge-docs && npm run minify-docs && webpack --mode production",
+      package: "npm run compile && vsce package",
     },
     devDependencies: {
       "@types/vscode": "^1.85.0",
       "@vscode/vsce": "^3.6.0",
+      "copy-webpack-plugin": "^12.0.0",
+      esbuild: "^0.28.0",
+      webpack: "^5.90.0",
+      "webpack-cli": "^5.1.0",
     },
   };
 }
@@ -303,6 +311,10 @@ function getLanguageIds(activationEvents) {
 
 function readBundledFile(relativePath) {
   return fs.readFileSync(path.join(__dirname, "..", relativePath), "utf8");
+}
+
+function readBundledBinaryFile(relativePath) {
+  return fs.readFileSync(path.join(__dirname, "..", relativePath));
 }
 
 function createExtensionJs(answers, languageIds) {
@@ -348,7 +360,9 @@ function createLaunchJson() {
           name: "Run Extension",
           type: "extensionHost",
           request: "launch",
+          preLaunchTask: "npm: compile",
           args: ["--extensionDevelopmentPath=${workspaceFolder}"],
+          outFiles: ["${workspaceFolder}/out/**/*.js"],
         },
       ],
     },
@@ -374,14 +388,19 @@ ${answers.repositoryUrl ? `\nRepository: ${answers.repositoryUrl}\n` : ""}
 - \`src/hoverProvider.js\`: reusable hover provider.
 - \`src/docsLoader.js\`: JSON documentation loader.
 - \`src/docs/example.json\`: example documentation data.
+- \`webpack.config.js\`: production bundle configuration.
+- \`scripts/merge-docs.js\`: merges JSON hover docs before bundling.
+- \`scripts/minify-docs.js\`: creates the minified docs file used by webpack.
 
 ## Running
 
 \`\`\`bash
 npm install
+npm run compile
 \`\`\`
 
 Open this folder in VS Code, press \`F5\`, and choose the **Run Extension** configuration.
+The launch configuration also runs \`npm: compile\` before starting the Extension Host.
 
 ## Adding Hover Data
 
@@ -484,6 +503,10 @@ function createProjectFiles(answers) {
       content: `${JSON.stringify(createPackageJson(answers), null, 2)}\n`,
     },
     {
+      relativePath: "icon.ico",
+      content: readBundledBinaryFile("icon.ico"),
+    },
+    {
       relativePath: "jsconfig.json",
       content: readBundledFile("jsconfig.json"),
     },
@@ -494,6 +517,18 @@ function createProjectFiles(answers) {
     {
       relativePath: ".gitignore",
       content: createGitignore(),
+    },
+    {
+      relativePath: "webpack.config.js",
+      content: readBundledFile("webpack.config.js"),
+    },
+    {
+      relativePath: "scripts/merge-docs.js",
+      content: readBundledFile("scripts/merge-docs.js"),
+    },
+    {
+      relativePath: "scripts/minify-docs.js",
+      content: readBundledFile("scripts/minify-docs.js"),
     },
     {
       relativePath: "LICENSE",
@@ -550,7 +585,7 @@ function writeProjectFiles(projectFiles) {
   for (const file of projectFiles) {
     const outputPath = path.join(process.cwd(), file.relativePath);
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-    fs.writeFileSync(outputPath, file.content, "utf8");
+    fs.writeFileSync(outputPath, file.content);
   }
 }
 

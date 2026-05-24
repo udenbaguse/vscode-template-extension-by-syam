@@ -11,7 +11,7 @@ npx vscode-template-extension-by-syam
 For local development:
 
 ```bash
-npm start
+node bin/cli.js
 ```
 
 The CLI asks for:
@@ -40,6 +40,10 @@ The generator creates a complete VS Code extension template:
 - `.vscode/launch.json`: Extension Host debug configuration.
 - `.vscodeignore`: packaging ignore rules.
 - `.gitignore`: Git ignore rules for Node and VS Code extension output.
+- `webpack.config.js`: production bundle configuration.
+- `scripts/merge-docs.js`: merges JSON hover docs before bundling.
+- `scripts/minify-docs.js`: creates the minified docs file used by webpack.
+- `icon.ico`: default extension icon referenced by `package.json`.
 - `LICENSE`: license file generated from the selected license value.
 - `jsconfig.json`: JavaScript configuration with `checkJs`.
 - `README.md`: starter documentation for the generated extension.
@@ -54,9 +58,9 @@ The generated `package.json` includes:
 - optional `repository` when `repositoryUrl` is provided.
 - `engines.vscode` with the default `^1.85.0`.
 - `activationEvents` from the selected checkbox languages.
-- `main` set to `./src/extension.js`.
-- `check`, `test`, and `package` scripts.
-- `@types/vscode` and `@vscode/vsce` as development dependencies.
+- `main` set to `./out/extension.js`.
+- `check`, `test`, `merge-docs`, `minify-docs`, `compile`, and `package` scripts.
+- `@types/vscode`, `@vscode/vsce`, `copy-webpack-plugin`, `esbuild`, `webpack`, and `webpack-cli` as development dependencies.
 
 ## Hover Data
 

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-05-24
+
+### Added
+- Use `webpack.config.js`, docs build scripts, and `icon.ico` in generated projects and the npm package file list.
+- Pointed generated extension manifests to the webpack output at `out/extension.js`.
+
 ## [1.0.1] - 2026-05-09
 
 ### Changed

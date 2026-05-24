@@ -1,7 +1,9 @@
 .vscode/**
 .vscode-test/**
+.gitignore
 node_modules/**
-out/**
-dist/**
 *.vsix
 debug.log
+src/**
+webpack.config.js
+scripts/
