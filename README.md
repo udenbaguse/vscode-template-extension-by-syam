@@ -8,12 +8,6 @@ A CLI generator for creating reusable VS Code extension templates. Run it with `
 npx vscode-template-extension-by-syam
 ```
 
-For local development:
-
-```bash
-node bin/cli.js
-```
-
 The CLI asks for:
 
 ```text
